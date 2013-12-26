@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+# SharpDevelop 4.1.0.8000
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StuceSoftware.Utilities", "StuceSoftware.Utilities\StuceSoftware.Utilities.csproj", "{279739C1-CF4A-4ED1-95F2-EB6BBDFB6B41}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{279739C1-CF4A-4ED1-95F2-EB6BBDFB6B41}.Debug|x86.Build.0 = Debug|x86
+		{279739C1-CF4A-4ED1-95F2-EB6BBDFB6B41}.Debug|x86.ActiveCfg = Debug|x86
+		{279739C1-CF4A-4ED1-95F2-EB6BBDFB6B41}.Release|x86.Build.0 = Release|x86
+		{279739C1-CF4A-4ED1-95F2-EB6BBDFB6B41}.Release|x86.ActiveCfg = Release|x86
+		{279739C1-CF4A-4ED1-95F2-EB6BBDFB6B41}.Debug|x64.Build.0 = Debug|x64
+		{279739C1-CF4A-4ED1-95F2-EB6BBDFB6B41}.Debug|x64.ActiveCfg = Debug|x64
+		{279739C1-CF4A-4ED1-95F2-EB6BBDFB6B41}.Release|x64.Build.0 = Release|x64
+		{279739C1-CF4A-4ED1-95F2-EB6BBDFB6B41}.Release|x64.ActiveCfg = Release|x64
+		{279739C1-CF4A-4ED1-95F2-EB6BBDFB6B41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{279739C1-CF4A-4ED1-95F2-EB6BBDFB6B41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{279739C1-CF4A-4ED1-95F2-EB6BBDFB6B41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{279739C1-CF4A-4ED1-95F2-EB6BBDFB6B41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+EndGlobal
