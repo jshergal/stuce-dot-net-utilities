@@ -167,5 +167,15 @@ namespace StuceSoftware.Utilities.Test
             var test = stack.ToArray();
             Assert.IsTrue(array.SequenceEqual(test));
         }
+
+        [TestMethod]
+        public void TestClearEmptiesStack()
+        {
+            var stack = new FixedSizeStack<int>(50, Enumerable.Range(0, 50));
+            Assert.IsTrue(stack.Count == 50);
+
+            stack.Clear();
+            Assert.IsTrue(stack.Count == 0);
+        }
     }
 }
