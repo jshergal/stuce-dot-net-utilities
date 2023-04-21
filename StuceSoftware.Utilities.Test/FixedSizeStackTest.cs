@@ -1,181 +1,152 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
+﻿namespace StuceSoftware.Utilities.Test;
 
-namespace StuceSoftware.Utilities.Test
+public class FixedSizeStackTest
 {
-    [TestClass]
-    public class FixedSizeStackTest
+    [Fact]
+    public void TestConstructorMaxSizeCannotBeZero()
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TestConstructorMaxSizeCannotBeZero()
-        {
-            var stack = new FixedSizeStack<int>(0);
-            Assert.Fail("Expected exception to be thrown.");
-        }
+        Assert.Throws<ArgumentOutOfRangeException>(() => new FixedSizeStack<int>(0));
+    }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TestConstructorMaxSizeCannotBeLessThanZero()
-        {
-            var stack = new FixedSizeStack<int>(-1);
-            Assert.Fail("Expected exception to be thrown.");
-        }
+    [Fact]
+    public void TestConstructorMaxSizeCannotBeLessThanZero()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new FixedSizeStack<int>(-1));
+    }
 
-        [TestMethod]
-        public void TestConstructorKeepsFirstElementsFromIEnumerable()
-        {
-            var stack = new FixedSizeStack<int>(5, Enumerable.Range(0, 10));
-            Assert.IsTrue(stack.SequenceEqual(Enumerable.Range(0, 5)));
-        }
+    [Fact]
+    public void TestConstructorKeepsFirstElementsFromIEnumerable()
+    {
+        var stack = new FixedSizeStack<int>(5, Enumerable.Range(0, 10));
+        Assert.True(stack.SequenceEqual(Enumerable.Range(0, 5)));
+    }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TestMaxSizeCannotSetZero()
-        {
-            var stack = new FixedSizeStack<int>(10);
-            stack.MaxSize = 0;
-            Assert.Fail("Expected exception to be thrown.");
-        }
+    [Fact]
+    public void TestMaxSizeCannotSetZero()
+    {
+        var stack = new FixedSizeStack<int>(10);
+        Assert.Throws<ArgumentOutOfRangeException>(() => stack.MaxSize = 0);
+    }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void TestMaxSizeCannotSetLessThanZero()
-        {
-            var stack = new FixedSizeStack<int>(10);
-            stack.MaxSize = -1;
-            Assert.Fail("Expected exception to be thrown.");
-        }
+    [Fact]
+    public void TestMaxSizeCannotSetLessThanZero()
+    {
+        var stack = new FixedSizeStack<int>(10);
+        Assert.Throws<ArgumentOutOfRangeException>(() => stack.MaxSize = -1);
+    }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void TestCannotPeekEmptyStack()
-        {
-            var stack = new FixedSizeStack<int>(10);
-            stack.Peek();
-            Assert.Fail("Expected exception to be thrown.");
-        }
+    [Fact]
+    public void TestCannotPeekEmptyStack()
+    {
+        var stack = new FixedSizeStack<int>(10);
+        Assert.Throws<InvalidOperationException>(() => stack.Peek());
+    }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void TestCannotPopEmptyStack()
-        {
-            var stack = new FixedSizeStack<int>(10);
-            stack.Pop();
-            Assert.Fail("Expected exception to be thrown.");
-        }
+    [Fact]
+    public void TestCannotPopEmptyStack()
+    {
+        var stack = new FixedSizeStack<int>(10);
+        Assert.Throws<InvalidOperationException>(() => stack.Pop());
+    }
 
-        [TestMethod]
-        public void TestPushSuccessful()
-        {
-            const int ValueToPush = 42;
-            var stack = new FixedSizeStack<int>(10);
-            Assert.IsTrue(stack.Count == 0);
+    [Fact]
+    public void TestPushSuccessful()
+    {
+        const int valueToPush = 42;
+        var stack = new FixedSizeStack<int>(10);
+        Assert.Empty(stack);
 
-            stack.Push(ValueToPush);
+        stack.Push(valueToPush);
 
-            Assert.IsTrue(stack.Count == 1);
-            Assert.AreEqual(ValueToPush, stack.Peek());
-        }
+        Assert.Single(stack);
+        Assert.Equal(valueToPush, stack.Peek());
+    }
 
-        [TestMethod]
-        public void TestPeekSuccessful()
-        {
-            const int ValueToPush = 42;
-            var stack = new FixedSizeStack<int>(10);
-            Assert.IsTrue(stack.Count == 0);
+    [Fact]
+    public void TestPeekSuccessful()
+    {
+        const int valueToPush = 42;
+        var stack = new FixedSizeStack<int>(10);
+        Assert.Empty(stack);
 
-            stack.Push(ValueToPush);
-            Assert.IsTrue(stack.Count == 1);
+        stack.Push(valueToPush);
+        Assert.Single(stack);
 
-            Assert.AreEqual(ValueToPush, stack.Peek());
-            Assert.IsTrue(stack.Count == 1);
-        }
+        Assert.Equal(valueToPush, stack.Peek());
+        Assert.Single(stack);
+    }
 
-        [TestMethod]
-        public void TestPopSuccessful()
-        {
-            const int ValueToPush = 42;
-            var stack = new FixedSizeStack<int>(10);
-            Assert.IsTrue(stack.Count == 0);
+    [Fact]
+    public void TestPopSuccessful()
+    {
+        const int valueToPush = 42;
+        var stack = new FixedSizeStack<int>(10);
+        Assert.Empty(stack);
 
-            stack.Push(ValueToPush);
-            Assert.IsTrue(stack.Count == 1);
+        stack.Push(valueToPush);
+        Assert.Single(stack);
 
-            Assert.AreEqual(ValueToPush, stack.Pop());
-            Assert.IsTrue(stack.Count == 0);
-        }
+        Assert.Equal(valueToPush, stack.Pop());
+        Assert.Empty(stack);
+    }
 
-        [TestMethod]
-        public void TestPushBeyondMaxSizeWillNotIncreaseSize()
-        {
-            var stack = new FixedSizeStack<int>(10);
-            for(int i=0; i < 100; ++i)
-            {
-                stack.Push(i);
-            }
-            Assert.IsTrue(stack.Count == 10);
-        }
+    [Fact]
+    public void TestPushBeyondMaxSizeWillNotIncreaseSize()
+    {
+        var stack = new FixedSizeStack<int>(10);
+        for (var i = 0; i < 100; ++i) stack.Push(i);
+        Assert.Equal(10, stack.Count);
+    }
 
-        [TestMethod]
-        public void TestPushBeyondMaxSizeDumpsOlderElements()
-        {
-            var stack = new FixedSizeStack<int>(10);
-            for(int i=0; i < 11; ++i)
-            {
-                stack.Push(i);
-            }
-            Assert.IsFalse(stack.Contains(0));
-            Assert.IsTrue(stack.Contains(10));
-        }
+    [Fact]
+    public void TestPushBeyondMaxSizeDumpsOlderElements()
+    {
+        var stack = new FixedSizeStack<int>(10);
+        for (var i = 0; i < 11; ++i) stack.Push(i);
+        Assert.DoesNotContain(0, stack);
+        Assert.Contains(10, stack);
+    }
 
-        [TestMethod]
-        public void TestSetMaxSizeSmallerDumpsElements()
-        {
-            var stack = new FixedSizeStack<int>(10);
-            for(int i=0; i < 10; ++i)
-            {
-                stack.Push(i);
-            }
-            Assert.IsTrue(stack.Count == 10);
+    [Fact]
+    public void TestSetMaxSizeSmallerDumpsElements()
+    {
+        var stack = new FixedSizeStack<int>(10);
+        for (var i = 0; i < 10; ++i) stack.Push(i);
+        Assert.Equal(10, stack.Count);
 
-            stack.MaxSize = 5;
-            Assert.IsTrue(stack.Count == 5);
-            for(int i=0; i < 5; ++i)
-            {
-                Assert.IsFalse(stack.Contains(i));
-            }
-        }
+        stack.MaxSize = 5;
+        Assert.Equal(5, stack.Count);
+        for (var i = 0; i < 5; ++i) Assert.DoesNotContain(i, stack);
+    }
 
-        [TestMethod]
-        public void TestSetMaxSizeWillNotDumpWhenLessElements()
-        {
-            var stack = new FixedSizeStack<int>(10, Enumerable.Range(0, 5));
-            Assert.IsTrue(stack.Count == 5);
+    [Fact]
+    public void TestSetMaxSizeWillNotDumpWhenLessElements()
+    {
+        var stack = new FixedSizeStack<int>(10, Enumerable.Range(0, 5));
+        Assert.Equal(5, stack.Count);
 
-            stack.MaxSize = 6;
-            Assert.IsTrue(stack.Count == 5);
-        }
+        stack.MaxSize = 6;
+        Assert.Equal(5, stack.Count);
+    }
 
-        [TestMethod]
-        public void TestToArray()
-        {
-            var array = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-            var stack = new FixedSizeStack<int>(array.Length, array);
+    [Fact]
+    public void TestToArray()
+    {
+        var array = new[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        var stack = new FixedSizeStack<int>(array.Length);
+        for (var i = 1; i <= array.Length; ++i) stack.Push(array[^i]);
 
-            var test = stack.ToArray();
-            Assert.IsTrue(array.SequenceEqual(test));
-        }
+        var test = stack.ToArray();
+        Assert.Equal(array, test);
+    }
 
-        [TestMethod]
-        public void TestClearEmptiesStack()
-        {
-            var stack = new FixedSizeStack<int>(50, Enumerable.Range(0, 50));
-            Assert.IsTrue(stack.Count == 50);
+    [Fact]
+    public void TestClearEmptiesStack()
+    {
+        var stack = new FixedSizeStack<int>(50, Enumerable.Range(0, 50));
+        Assert.Equal(50, stack.Count);
 
-            stack.Clear();
-            Assert.IsTrue(stack.Count == 0);
-        }
+        stack.Clear();
+        Assert.Empty(stack);
     }
 }

@@ -19,30 +19,26 @@
 // OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
-namespace StuceSoftware.Utilities.Forms
+namespace StuceSoftware.Utilities.Forms;
+
+/// <summary>
+///     Description of NativeMethods.
+/// </summary>
+internal static class NativeMethods
 {
-    /// <summary>
-    /// Description of NativeMethods.
-    /// </summary>
-    internal static class NativeMethods
-    {
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern IntPtr SendMessage(IntPtr hWnd, int message,
-                                                 IntPtr wparam, IntPtr lparam);
+    [DllImport("user32.dll")]
+    private static extern IntPtr SendMessage(IntPtr hWnd, int message,
+                                             IntPtr wparam, IntPtr lparam);
 
-        internal static void SetCursor(Form form)
-        {
-            form.ThrowIfNull("form");
-            var handle = form.Handle;
-            if (handle != null)
-            {
-                // See http://msdn.microsoft.com/en-us/library/windows/desktop/ms648382%28v=vs.85%29.aspx
-                // for details on sending the WM_SETCURSOR message
-                SendMessage(handle, (int)WindowsMessage.SetCursor, handle, (IntPtr)1);
-            }
-        }
+    internal static void SetCursor(Form form)
+    {
+        ArgumentNullException.ThrowIfNull(form, nameof(form));
+
+        // See http://msdn.microsoft.com/en-us/library/windows/desktop/ms648382%28v=vs.85%29.aspx
+        // for details on sending the WM_SETCURSOR message
+        var handle = form.Handle;
+        SendMessage(handle, (int) WindowsMessage.SetCursor, handle, (IntPtr) 1);
     }
 }

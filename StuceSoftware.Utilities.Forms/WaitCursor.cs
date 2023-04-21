@@ -19,60 +19,51 @@
 // OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
 
-using System;
-using System.Windows.Forms;
+using System.Diagnostics.CodeAnalysis;
 
-namespace StuceSoftware.Utilities.Forms
+namespace StuceSoftware.Utilities.Forms;
+
+/// <summary>
+///     Wait cursor class can be used in a <see cref="using" /> statement
+///     to display a wait cursor (hourglass).
+/// </summary>
+public sealed class WaitCursor : IDisposable
 {
+    // Note:
+    // This class is based on an answer from Hans Passant on Stack Overflow:
+    // http://stackoverflow.com/a/302865/416574
+    //
+
     /// <summary>
-    /// Wait cursor class can be used in a <see cref="using" /> statement
-    /// to display a wait cursor (hourglass).
+    ///     Initializes a new instance of the <see cref="WaitCursor" /> class.
     /// </summary>
-    public sealed class WaitCursor : IDisposable
+    public WaitCursor() => Enabled = true;
+
+    /// <summary>
+    ///     Gets/sets whether or not the wait cursor (hourglass) is displayed.
+    /// </summary>
+    public static bool Enabled
     {
-        // Note:
-        // This class is based on an answer from Hans Passant on Stack Overflow:
-        // http://stackoverflow.com/a/302865/416574
-        //
-        
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WaitCursor" /> class.
-        /// </summary>
-        public WaitCursor()
+        get => Application.UseWaitCursor;
+        set
         {
-            Enabled = true;
-        }
-        
-        /// <summary>
-        /// Gets/sets whether or not the wait cursor (hourglass) is displayed.
-        /// </summary>
-        public static bool Enabled
-        {
-            get
+            if (value != Application.UseWaitCursor)
             {
-                return Application.UseWaitCursor;
+                Application.UseWaitCursor = value;
+
+                // Must force a WM_SETCURSOR call for wait cursor
+                // to be displayed/undisplayed properly
+                NativeMethods.SetCursor(Form.ActiveForm);
             }
-            set
-            {
-                if (value != Application.UseWaitCursor)
-                {
-                    Application.UseWaitCursor = value;
-                    
-                    // Must force a WM_SETCURSOR call for wait cursor
-                    // to be displayed/undisplayed properly
-                    NativeMethods.SetCursor(Form.ActiveForm);
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Sets the cursor back to normal.
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
-        public void Dispose()
-        {
-            Enabled = false;
         }
     }
 
+    /// <summary>
+    ///     Sets the cursor back to normal.
+    /// </summary>
+    [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
+    public void Dispose()
+    {
+        Enabled = false;
+    }
 }

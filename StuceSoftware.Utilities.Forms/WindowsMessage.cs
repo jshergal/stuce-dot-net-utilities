@@ -18,20 +18,18 @@
 // OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
 // OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 // 
-using System;
 
-namespace StuceSoftware.Utilities.Forms
+namespace StuceSoftware.Utilities.Forms;
+
+/// <summary>
+///     Enumeration for holding windows message values
+/// </summary>
+public enum WindowsMessage
 {
     /// <summary>
-    /// Enumeration for holding windows message values
+    ///     WM_SETCURSOR
+    ///     <para />
+    ///     http://msdn.microsoft.com/en-us/library/windows/desktop/ms648382%28v=vs.85%29.aspx
     /// </summary>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1008:EnumsShouldHaveZeroValue")]
-    public enum WindowsMessage
-    {
-        /// <summary>
-        /// WM_SETCURSOR <para />
-        /// http://msdn.microsoft.com/en-us/library/windows/desktop/ms648382%28v=vs.85%29.aspx
-        /// </summary>
-        SetCursor = 0x20, 
-    }
+    SetCursor = 0x20,
 }
