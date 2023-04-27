@@ -93,6 +93,12 @@ public sealed class TemporaryFile : IDisposable, IAsyncDisposable
     /// </summary>
     public void Dispose()
     {
+        DisposeInternal();
+        GC.SuppressFinalize(this);
+    }
+
+    private void DisposeInternal()
+    {
         try
         {
             // Ensure there is a file name and the file still exists
@@ -103,8 +109,6 @@ public sealed class TemporaryFile : IDisposable, IAsyncDisposable
         {
             // Just eat exceptions in the dispose method
         }
-
-        GC.SuppressFinalize(this);
     }
 
     /// <summary>
@@ -112,12 +116,12 @@ public sealed class TemporaryFile : IDisposable, IAsyncDisposable
     /// </summary>
     ~TemporaryFile()
     {
-        Dispose();
+        DisposeInternal();
     }
 
     public ValueTask DisposeAsync()
     {
-        Dispose();
+        DisposeInternal();
         GC.SuppressFinalize(this);
 
         return ValueTask.CompletedTask;
