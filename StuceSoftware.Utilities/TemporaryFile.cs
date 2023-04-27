@@ -25,7 +25,7 @@ namespace StuceSoftware.Utilities;
 ///     Class for generating and temporary files.  The file will be created in the
 ///     constructor and then cleaned up when the class is disposed.
 /// </summary>
-public sealed class TemporaryFile : IDisposable
+public sealed class TemporaryFile : IDisposable, IAsyncDisposable
 {
     #region Constructors
 
@@ -113,6 +113,14 @@ public sealed class TemporaryFile : IDisposable
     ~TemporaryFile()
     {
         Dispose();
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        Dispose();
+        GC.SuppressFinalize(this);
+
+        return ValueTask.CompletedTask;
     }
 
     #endregion

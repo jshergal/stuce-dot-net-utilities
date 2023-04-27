@@ -1,4 +1,6 @@
-﻿namespace StuceSoftware.Utilities.Test;
+﻿using System.Buffers;
+
+namespace StuceSoftware.Utilities.Test;
 
 public class TemporaryFileTests
 {
@@ -43,5 +45,25 @@ public class TemporaryFileTests
         }
 
         Directory.Delete(tempPath, true);
+    }
+
+    [Fact]
+    public async void GivenTemporaryFile_WhenAsyncDisposed_DeletesFile()
+    {
+        var fileName = await CreateTempFileAsynchronously().ConfigureAwait(false);
+        Assert.False(File.Exists(fileName));
+    }
+
+    // Helper method to verify AsyncDispose is called correctly
+    private static async Task<string> CreateTempFileAsynchronously()
+    {
+        await using var tempFile = new TemporaryFile();
+        var buffer = new byte[128];
+        Random.Shared.NextBytes(buffer);
+        await File.WriteAllBytesAsync(tempFile.FileName, buffer).ConfigureAwait(false);
+
+        Assert.True(File.Exists(tempFile.FileName));
+
+        return tempFile.FileName;
     }
 }
