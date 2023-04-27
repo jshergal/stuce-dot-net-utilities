@@ -1,5 +1,5 @@
 ﻿// 
-// Copyright 2009 - 2012 - Jeff Shergalis
+// Copyright 2009 - 2023 - Jeff Shergalis
 // 
 // Licensed under the MIT License - http://www.opensource.org/licenses/mit-license.php
 //
