@@ -1,5 +1,5 @@
-﻿// 
-// Copyright 2009 - 2023 - Jeff Shergalis
+﻿// Copyright 2009 - 2023 - Jeff Shergalis
+// https://github.com/jshergal/stuce-dot-net-utilities
 // 
 // Licensed under the MIT License - http://www.opensource.org/licenses/mit-license.php
 //
